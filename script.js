@@ -1,71 +1,74 @@
-const options = ["rock", "paper", "scissors"];
+let playerScore = 0;
+let computerScore = 0;
+let ties = 0;
 
-const getComputerChoice = () => {
-  const choice = options[Math.floor(Math.random() * options.length)];
-  return choice;
-};
+const hands = document.querySelectorAll('.hand');
+const resultText = document.querySelector('.result');
+const playerScoreSpan = document.getElementById('player-score');
+const computerScoreSpan = document.getElementById('computer-score');
+const tiesSpan = document.getElementById('ties');
+const resetButton = document.getElementById('reset');
 
-const checkWinner = (playerSelection, computerSelection) => {
-  if (playerSelection === computerSelection) return "Tie";
-  else if (
-    (playerSelection === "rock" && computerSelection === "scissors") ||
-    (playerSelection === "scissors" && computerSelection === "paper") ||
-    (playerSelection === "paper" && computerSelection === "rock")
-  ) {
-    return "Player";
-  } else {
-    return "Computer";
-  }
-};
-
-const playRound = (playerSelection, computerSelection) => {
-  const result = checkWinner(playerSelection, computerSelection);
-  if (result === "Tie") {
-    return "It's a tie!";
-  } else if (result === "Player") {
-    return `You win! ${playerSelection} beats ${computerSelection}`;
-  } else {
-    return `You lose! ${computerSelection} beats ${playerSelection}`;
-  }
-};
-
-const getPlayerChoice = () => {
-  let validInput = false;
-  while (!validInput) {
-    const choice = prompt("Rock, Paper, Scissors").toLowerCase();
-    if (choice === null) {
-      continue;
-    }
-    if (options.includes(choice)) {
-      validInput = true;
-      return choice;
-    }
-  }
-};
-
-const playGame = () => {
-  let scorePlayer = 0;
-  let scoreComputer = 0;
-  console.log("Let's play!");
-  for (let i = 0; i < 5; i++) {
-    const playerSelection = getPlayerChoice();
+hands.forEach(hand => {
+  hand.addEventListener('click', function() {
+    const playerSelection = this.id;
     const computerSelection = getComputerChoice();
-    console.log(playRound(playerSelection, computerSelection));
-    const winner = checkWinner(playerSelection, computerSelection);
-    if (winner === "Player") {
-      scorePlayer++;
-    } else if (winner === "Computer") {
-      scoreComputer++;
-    }
-  }
-  console.log("Game Over");
-  if (scorePlayer > scoreComputer) {
-    console.log("Player wins");
-  } else if (scorePlayer < scoreComputer) {
-    console.log("Computer wins");
-  } else {
-    console.log("It's a tie!");
-  }
-};
+    const winner = determineWinner(playerSelection, computerSelection);
+    updateScore(winner);
+    displayResult(winner, playerSelection, computerSelection);
+  });
+});
 
-playGame();
+resetButton.addEventListener('click', function() {
+  playerScore = 0;
+  computerScore = 0;
+  ties = 0;
+  playerScoreSpan.textContent = playerScore;
+  computerScoreSpan.textContent = computerScore;
+  tiesSpan.textContent = ties;
+  resultText.textContent = "Choose your move!";
+});
+
+function getComputerChoice() {
+  const choices = ['rock', 'paper', 'scissors'];
+  const randomIndex = Math.floor(Math.random() * choices.length);
+  return choices[randomIndex];
+}
+
+function determineWinner(player, computer) {
+  switch (player + computer) {
+    case 'rockscissors':
+    case 'paperrock':
+    case 'scissorspaper':
+      return 'player';
+    case 'rockpaper':
+    case 'paperscissors':
+    case 'scissorsrock':
+      return 'computer';
+    default:
+      return 'tie';
+  }
+}
+
+function updateScore(winner) {
+  if (winner === 'player') {
+    playerScore++;
+  } else if (winner === 'computer') {
+    computerScore++;
+  } else {
+    ties++;
+  }
+  playerScoreSpan.textContent = playerScore;
+  computerScoreSpan.textContent = computerScore;
+  tiesSpan.textContent = ties;
+}
+
+function displayResult(winner, playerSelection, computerSelection) {
+  if (winner === 'player') {
+    resultText.textContent = `You Win! ${playerSelection} beats ${computerSelection}.`;
+  } else if (winner === 'computer') {
+    resultText.textContent = `You Lose! ${computerSelection} beats ${playerSelection}.`;
+  } else {
+    resultText.textContent = "It's a tie!";
+  }
+}

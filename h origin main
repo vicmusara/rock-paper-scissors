@@ -1,0 +1,11 @@
+[33mcommit 48949bda2a0cf2e1ce94e539c8f008c576fd6ec1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/rps-ui[m[33m, [m[1;31morigin/main[m[33m, [m[1;32mrps-ui[m[33m)[m
+Author: vmg <musaravgd@gmail.com>
+Date:   Tue Mar 12 09:46:39 2024 +0200
+
+    The struggle is real
+
+[33mcommit 4312d0af0029d0b13c130be2382a2464b95522b2[m
+Author: vmg <musaravgd@gmail.com>
+Date:   Mon Mar 11 15:44:52 2024 +0200
+
+    A function called getComputerChoice that will randomly return either 'Rock', 'Paper' or 'Scissors'.
